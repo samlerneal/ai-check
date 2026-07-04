@@ -1,0 +1,15 @@
+.wrangler/
+.env
+.env.*
+wrangler.toml
+AGENTS.md
+.ai-collaboration.md
+docs/handoffs/
+docs/tasks/
+docs/runbooks/
+docs/command-log.md
+node_modules/
+dist/
+.DS_Store
+collector/ai-check-dns-collector
+collector/*.exe

@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Claude Code Compliance Check</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero" aria-labelledby="page-title">
+        <div>
+          <div class="top-row">
+            <p class="eyebrow" data-i18n="heroEyebrow">Claude Code 专用 · 百分制风险分 · 关闭即删除</p>
+            <div class="language-switcher" aria-label="Language">
+              <button type="button" class="language-button active" data-language="zh">中文</button>
+              <button type="button" class="language-button" data-language="en">EN</button>
+              <button type="button" class="language-button" data-language="ru">RU</button>
+            </div>
+          </div>
+          <h1 id="page-title" data-i18n="pageTitle">Claude Code 合规自查</h1>
+          <p class="lede" data-i18n="heroLede">
+            一次点击完成浏览器与网络出口检测，再粘贴 Claude Code 脱敏配置 JSON，检查与 Anthropic 支持地区政策的一致性。风险分越低越好。
+          </p>
+        </div>
+        <div class="privacy-panel">
+          <h2 data-i18n="privacyTitle">隐私承诺</h2>
+          <p data-i18n="privacyCopy1">检测结果只存在当前页面会话中。关闭页面后，检测结果、粘贴内容和评分都会消失。</p>
+          <p data-i18n="privacyCopy2">本工具不使用 cookie、localStorage 或 IndexedDB 保存报告；本机配置 JSON 只在浏览器本地解析。</p>
+        </div>
+      </section>
+
+      <section class="score-grid" aria-label="风险分">
+        <article class="score-card primary-score">
+          <div class="score-ring" id="risk-score-ring">
+            <strong id="risk-score">--</strong>
+            <span>/ 100</span>
+          </div>
+          <div>
+            <p class="score-title" id="risk-stage">等待开始检测</p>
+            <p class="score-copy" id="risk-score-copy">点击步骤 1 后才会读取浏览器和网络环境。</p>
+          </div>
+        </article>
+        <article class="coverage-card">
+          <p class="score-title" data-i18n="coverageTitle">证据覆盖</p>
+          <div class="coverage-bar" aria-hidden="true"><span id="coverage-fill"></span></div>
+          <p class="score-copy" id="coverage-copy">步骤 1 覆盖 70/100，步骤 2 覆盖 30/100。</p>
+          <p class="risk-band-copy" data-i18n="riskBandCopy">分段：0-19 低风险，20-39 注意风险，40-59 高风险，60-79 严重风险，80-100 极高风险。</p>
+        </article>
+      </section>
+
+      <section class="workflow" aria-labelledby="workflow-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker" data-i18n="workflowKicker">流程</p>
+            <h2 id="workflow-title" data-i18n="workflowTitle">两步完成检测</h2>
+          </div>
+          <button type="button" class="secondary-button" id="clear-session" data-i18n="clearSession">清空本页结果</button>
+        </div>
+        <div class="workflow-grid">
+          <article class="step-card">
+            <p class="step-number" data-i18n="step1Number">步骤 1 · 70/100</p>
+            <h3 data-i18n="step1Title">浏览器与网络检测</h3>
+            <p data-i18n="step1Copy">点击后读取当前浏览器的语言、时区、平台信息和 WebRTC 候选地址，并连接默认网络检测服务检查出口国家或地区、ASN、IPv4/IPv6 分流。DNS 解析出口需要权威 DNS 事件源，接入后会自动纳入同一次检测。</p>
+            <p class="helper-text" id="network-service-note">检测时会向默认网络检测服务发起请求；本机配置 JSON 不会发送到该服务。</p>
+            <button type="button" id="run-web-probes" data-i18n="runWebProbes">开始环境与网络检测</button>
+          </article>
+
+          <article class="step-card config-step">
+            <p class="step-number" data-i18n="step2Number">步骤 2 · 30/100</p>
+            <h3 data-i18n="step2Title">Claude Code 本机配置核对</h3>
+            <p data-i18n="step2Copy">复制命令到 Claude Code 所在环境运行，把输出的脱敏 JSON 粘贴回来。手机端可在 SSH/终端应用中运行；无法运行命令时，可展开下方手动核对并填写可见配置。页面只本地解析，不上传、不保存。</p>
+            <div class="device-selector" aria-label="Claude Code 运行环境">
+              <span class="device-label" data-i18n="deviceLabel">Claude Code 运行环境</span>
+              <div class="segmented-control">
+                <button type="button" class="segment-button active" data-device="computer" data-i18n="deviceComputer">电脑</button>
+                <button type="button" class="segment-button" data-device="remote-server" data-i18n="deviceRemoteServer">远程服务器</button>
+                <button type="button" class="segment-button" data-device="iphone" data-i18n="deviceIphone">iPhone</button>
+                <button type="button" class="segment-button" data-device="android" data-i18n="deviceAndroid">安卓</button>
+                <button type="button" class="segment-button" data-device="other" data-i18n="deviceOther">其他</button>
+              </div>
+              <p class="device-guide" id="device-guide">在 Claude Code 所在的电脑终端中运行上方命令，把输出的脱敏 JSON 粘贴回来即可。</p>
+            </div>
+            <label class="field-label" for="diagnostic-command" data-i18n="commandLabel">生成脱敏配置 JSON 的命令</label>
+            <textarea id="diagnostic-command" class="command-box" readonly spellcheck="false">python3 -c 'import os,json,subprocess,urllib.parse; get=lambda k: os.environ.get(k,""); run=lambda c: subprocess.run(c,shell=True,text=True,capture_output=True).stdout.strip(); host=lambda v: (urllib.parse.urlparse(v).hostname or v.split("/")[0].split(":")[0] if v else ""); safe_base=lambda v: (urllib.parse.urlparse(v).scheme+"://"+host(v) if urllib.parse.urlparse(v).scheme and host(v) else v); env={"ANTHROPIC_BASE_URL":safe_base(get("ANTHROPIC_BASE_URL")),"HTTP_PROXY":host(get("HTTP_PROXY")),"HTTPS_PROXY":host(get("HTTPS_PROXY")),"ALL_PROXY":host(get("ALL_PROXY")),"GRPC_PROXY":host(get("GRPC_PROXY"))}; loc={"LANG":get("LANG"),"LC_ALL":get("LC_ALL"),"AppleLocale":run("defaults read -g AppleLocale 2>/dev/null")}; tz=run("readlink /etc/localtime 2>/dev/null").split("zoneinfo/")[-1]; print(json.dumps({"env":env,"locale":loc,"timezone":tz},ensure_ascii=False))'</textarea>
+            <div class="button-row">
+              <button type="button" id="copy-diagnostic-command" data-i18n="copyCommand">复制命令</button>
+            </div>
+            <label class="field-label" for="diagnostic-input" data-i18n="diagnosticInputLabel">粘贴脱敏配置 JSON</label>
+            <textarea id="diagnostic-input" spellcheck="false" data-i18n-placeholder="diagnosticPlaceholder" placeholder='{"env":{"ANTHROPIC_BASE_URL":"https://api.anthropic.com","HTTPS_PROXY":"set"},"locale":{"LANG":"en_US.UTF-8","AppleLocale":"en_US"},"timezone":"America/Los_Angeles"}'></textarea>
+            <div class="button-row">
+              <button type="button" id="parse-diagnostic" data-i18n="parseDiagnostic">核对 Claude Code 配置</button>
+            </div>
+            <details class="manual-panel" id="mobile-manual-panel">
+              <summary data-i18n="manualSummary">手机端手动核对</summary>
+              <p class="helper-text" data-i18n="manualCopy">如果你在手机终端、SSH 应用或远程控制环境中使用 Claude Code，可以直接运行上方命令；如果当前手机无法运行命令，就把能看到的 BASE_URL、代理、Locale、时区填入这里，页面会生成同样的脱敏 JSON 并本地评分。</p>
+              <div class="manual-grid">
+                <label class="field-label" for="manual-base-url">
+                  <span data-i18n="manualBaseUrl">ANTHROPIC_BASE_URL 主机</span>
+                  <input id="manual-base-url" type="text" autocomplete="off" placeholder="api.anthropic.com">
+                </label>
+                <label class="field-label" for="manual-proxy">
+                  <span data-i18n="manualProxy">代理主机或 set</span>
+                  <input id="manual-proxy" type="text" autocomplete="off" placeholder="set">
+                </label>
+                <label class="field-label" for="manual-locale">
+                  <span data-i18n="manualLocale">Locale</span>
+                  <input id="manual-locale" type="text" autocomplete="off" placeholder="en_US.UTF-8">
+                </label>
+                <label class="field-label" for="manual-timezone">
+                  <span data-i18n="manualTimezone">Shell 时区</span>
+                  <input id="manual-timezone" type="text" autocomplete="off" placeholder="America/Los_Angeles">
+                </label>
+              </div>
+              <div class="button-row">
+                <button type="button" id="build-manual-diagnostic" data-i18n="manualBuild">生成并核对手动配置</button>
+              </div>
+              <details class="manual-field-help">
+                <summary data-i18n="manualFieldHelpTitle">手动字段帮助</summary>
+                <p class="helper-text" data-i18n="manualFieldHelpIntro">如果你无法在 Claude Code 所在环境运行命令，可以按以下方式查看这些值：</p>
+                <table class="help-table">
+                  <tr><th data-i18n="helpTableField">字段</th><th data-i18n="helpTableHowToCheck">查看方式</th><th data-i18n="helpTableNote">说明</th></tr>
+                  <tr><td>ANTHROPIC_BASE_URL</td><td><code>echo $ANTHROPIC_BASE_URL</code></td><td data-i18n="manualFieldHelpBaseUrl">在终端执行 echo $ANTHROPIC_BASE_URL。如果为空表示未设置，Claude Code 使用默认官方 API。</td></tr>
+                  <tr><td data-i18n="manualProxy">代理变量</td><td><code>env | grep -i proxy</code></td><td data-i18n="manualFieldHelpProxy">在终端执行 env | grep -i proxy。你只需要填写主机名或 set，不要粘贴账号密码。常见变量：HTTP_PROXY、HTTPS_PROXY、ALL_PROXY。</td></tr>
+                  <tr><td>Locale</td><td><code>echo $LANG && echo $LC_ALL</code></td><td data-i18n="manualFieldHelpLocale">在终端执行 echo $LANG && echo $LC_ALL。macOS 上可用 defaults read -g AppleLocale。例如 en_US.UTF-8。</td></tr>
+                  <tr><td data-i18n="manualTimezone">Shell 时区</td><td><code>echo $TZ</code></td><td data-i18n="manualFieldHelpTimezone">在终端执行 echo $TZ。如果为空，用 date +%Z 查看当前时区缩写，或检查系统时区设置。例如 America/Los_Angeles。</td></tr>
+                </table>
+                <p class="help-warning" data-i18n="manualFieldHelpWarning">安全提醒：不要在任何字段中输入 API key、token、密码、SSH 私钥或代理凭据。本页面只做合规一致性检查。</p>
+              </details>
+            </details>
+            <div class="diagnostic-summary" id="diagnostic-summary">尚未核对 Claude Code 本机配置。</div>
+          </article>
+        </div>
+      </section>
+
+      <section class="layout-grid">
+        <section class="panel wide-panel" aria-labelledby="results-title">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker" data-i18n="resultKicker">结果</p>
+              <h2 id="results-title" data-i18n="resultsTitle">风险项、证据与合规化建议</h2>
+            </div>
+          </div>
+          <div class="findings-list" id="findings-list"></div>
+        </section>
+
+        <section class="panel wide-panel" aria-labelledby="basis-title">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker" data-i18n="basisKicker">原理</p>
+              <h2 id="basis-title" data-i18n="basisTitle">评分原理</h2>
+            </div>
+          </div>
+          <div class="basis-grid">
+            <article>
+              <h3 data-i18n="principleRegionTitle">出口地区</h3>
+              <p data-i18n="principleRegionCopy">用 HTTP 出口国家、地区和 Anthropic Supported Countries allowlist 对比。不在清单或属于官方排除区域时直接满分扣分。</p>
+            </article>
+            <article>
+              <h3 data-i18n="principleNetworkTitle">出口网络画像</h3>
+              <p data-i18n="principleNetworkCopy">先看出口国家是否支持，再看 ASN/AS 组织是否像共享代理、云厂商或中转网络。地区不支持优先于一致性。</p>
+            </article>
+            <article>
+              <h3 data-i18n="principleIpTitle">IPv4 / IPv6</h3>
+              <p data-i18n="principleIpCopy">分别检查 IPv4 与 IPv6 出口。任一路径落在限制地区都扣分；两条路径国家不一致也扣分。</p>
+            </article>
+            <article>
+              <h3 data-i18n="principleDnsTitle">DNS 解析出口</h3>
+              <p data-i18n="principleDnsCopy">DNS resolver 需要 authoritative DNS 日志或外部 DNS 事件源。未接入时不伪造结果；接入后按 resolver 国家与 HTTP 出口一致性评分。</p>
+            </article>
+            <article>
+              <h3 data-i18n="principleBrowserTitle">浏览器语言与时区</h3>
+              <p data-i18n="principleBrowserCopy">浏览器语言或时区如果直接指向限制地区会扣分；否则才作为与网络出口的一致性辅助信号。</p>
+            </article>
+            <article>
+              <h3 data-i18n="principleWebRtcTitle">WebRTC</h3>
+              <p data-i18n="principleWebRtcCopy">检查 WebRTC candidate 是否暴露可路由公网地址。它本身不能稳定判断国家，但可发现额外网络路径。</p>
+            </article>
+            <article>
+              <h3 data-i18n="principleBaseUrlTitle">Claude Code BASE_URL</h3>
+              <p data-i18n="principleBaseUrlCopy">检查 ANTHROPIC_BASE_URL 是否指向官方 API 或明确授权路径。不明端点、其他模型供应商或限制地区相关域名会扣分。</p>
+            </article>
+            <article>
+              <h3 data-i18n="principleProxyTitle">代理变量</h3>
+              <p data-i18n="principleProxyCopy">检查 HTTP_PROXY、HTTPS_PROXY、ALL_PROXY、GRPC_PROXY。代理越多路径越不清晰；限制地区相关代理直接高风险。</p>
+            </article>
+            <article>
+              <h3 data-i18n="principleLocaleTitle">本机 Locale / shell 时区</h3>
+              <p data-i18n="principleLocaleCopy">本机语言和时区如果指向限制地区会扣分；同时检查它们是否与浏览器和网络出口冲突。</p>
+            </article>
+            <article>
+              <h3 data-i18n="principleIgnoredTitle">不评分项</h3>
+              <p data-i18n="principleIgnoredCopy">中文输入法、普通中文软件、用途自报等网页无法可靠检测或缺乏明确公开条款依据，不进入评分。</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel wide-panel disclaimer-panel" aria-labelledby="disclaimer-title">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker" data-i18n="disclaimerKicker">声明</p>
+              <h2 id="disclaimer-title" data-i18n="disclaimerTitle">合规使用声明</h2>
+            </div>
+          </div>
+          <p data-i18n="disclaimerCopy">本工具严格遵守 Anthropic 使用条款、支持地区政策与 Claude Code 合规使用规范，致力于帮助用户发现并整改不一致配置，促进合规化使用；不提供规避限制、绕过检测或违反服务条款的操作建议。</p>
+        </section>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
