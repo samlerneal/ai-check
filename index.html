@@ -12,10 +12,13 @@
         <div>
           <div class="top-row">
             <p class="eyebrow" data-i18n="heroEyebrow">Claude Code 专用 · 百分制风险分 · 关闭即删除</p>
-            <div class="language-switcher" aria-label="Language">
-              <button type="button" class="language-button active" data-language="zh">中文</button>
-              <button type="button" class="language-button" data-language="en">EN</button>
-              <button type="button" class="language-button" data-language="ru">RU</button>
+            <div class="top-actions">
+              <a class="github-link" href="https://github.com/samlerneal/ai-check" target="_blank" rel="noopener" data-i18n="githubLink">GitHub</a>
+              <div class="language-switcher" aria-label="Language">
+                <button type="button" class="language-button active" data-language="zh">中文</button>
+                <button type="button" class="language-button" data-language="en">EN</button>
+                <button type="button" class="language-button" data-language="ru">RU</button>
+              </div>
             </div>
           </div>
           <h1 id="page-title" data-i18n="pageTitle">Claude Code 合规自查</h1>
@@ -69,18 +72,7 @@
           <article class="step-card config-step">
             <p class="step-number" data-i18n="step2Number">步骤 2 · 30/100</p>
             <h3 data-i18n="step2Title">Claude Code 本机配置核对</h3>
-            <p data-i18n="step2Copy">复制命令到 Claude Code 所在环境运行，把输出的脱敏 JSON 粘贴回来。手机端可在 SSH/终端应用中运行；无法运行命令时，可展开下方手动核对并填写可见配置。页面只本地解析，不上传、不保存。</p>
-            <div class="device-selector" aria-label="Claude Code 运行环境">
-              <span class="device-label" data-i18n="deviceLabel">Claude Code 运行环境</span>
-              <div class="segmented-control">
-                <button type="button" class="segment-button active" data-device="computer" data-i18n="deviceComputer">电脑</button>
-                <button type="button" class="segment-button" data-device="remote-server" data-i18n="deviceRemoteServer">远程服务器</button>
-                <button type="button" class="segment-button" data-device="iphone" data-i18n="deviceIphone">iPhone</button>
-                <button type="button" class="segment-button" data-device="android" data-i18n="deviceAndroid">安卓</button>
-                <button type="button" class="segment-button" data-device="other" data-i18n="deviceOther">其他</button>
-              </div>
-              <p class="device-guide" id="device-guide">在 Claude Code 所在的电脑终端中运行上方命令，把输出的脱敏 JSON 粘贴回来即可。</p>
-            </div>
+            <p data-i18n="step2Copy">当前仅支持在 Claude Code 所在电脑终端运行命令并粘贴脱敏 JSON。页面只在浏览器本地解析，不上传、不保存。</p>
             <label class="field-label" for="diagnostic-command" data-i18n="commandLabel">生成脱敏配置 JSON 的命令</label>
             <textarea id="diagnostic-command" class="command-box" readonly spellcheck="false">python3 -c 'import os,json,subprocess,urllib.parse; get=lambda k: os.environ.get(k,""); run=lambda c: subprocess.run(c,shell=True,text=True,capture_output=True).stdout.strip(); host=lambda v: (urllib.parse.urlparse(v).hostname or v.split("/")[0].split(":")[0] if v else ""); safe_base=lambda v: (urllib.parse.urlparse(v).scheme+"://"+host(v) if urllib.parse.urlparse(v).scheme and host(v) else v); env={"ANTHROPIC_BASE_URL":safe_base(get("ANTHROPIC_BASE_URL")),"HTTP_PROXY":host(get("HTTP_PROXY")),"HTTPS_PROXY":host(get("HTTPS_PROXY")),"ALL_PROXY":host(get("ALL_PROXY")),"GRPC_PROXY":host(get("GRPC_PROXY"))}; loc={"LANG":get("LANG"),"LC_ALL":get("LC_ALL"),"AppleLocale":run("defaults read -g AppleLocale 2>/dev/null")}; tz=run("readlink /etc/localtime 2>/dev/null").split("zoneinfo/")[-1]; print(json.dumps({"env":env,"locale":loc,"timezone":tz},ensure_ascii=False))'</textarea>
             <div class="button-row">
@@ -91,43 +83,6 @@
             <div class="button-row">
               <button type="button" id="parse-diagnostic" data-i18n="parseDiagnostic">核对 Claude Code 配置</button>
             </div>
-            <details class="manual-panel" id="mobile-manual-panel">
-              <summary data-i18n="manualSummary">手机端手动核对</summary>
-              <p class="helper-text" data-i18n="manualCopy">如果你在手机终端、SSH 应用或远程控制环境中使用 Claude Code，可以直接运行上方命令；如果当前手机无法运行命令，就把能看到的 BASE_URL、代理、Locale、时区填入这里，页面会生成同样的脱敏 JSON 并本地评分。</p>
-              <div class="manual-grid">
-                <label class="field-label" for="manual-base-url">
-                  <span data-i18n="manualBaseUrl">ANTHROPIC_BASE_URL 主机</span>
-                  <input id="manual-base-url" type="text" autocomplete="off" placeholder="api.anthropic.com">
-                </label>
-                <label class="field-label" for="manual-proxy">
-                  <span data-i18n="manualProxy">代理主机或 set</span>
-                  <input id="manual-proxy" type="text" autocomplete="off" placeholder="set">
-                </label>
-                <label class="field-label" for="manual-locale">
-                  <span data-i18n="manualLocale">Locale</span>
-                  <input id="manual-locale" type="text" autocomplete="off" placeholder="en_US.UTF-8">
-                </label>
-                <label class="field-label" for="manual-timezone">
-                  <span data-i18n="manualTimezone">Shell 时区</span>
-                  <input id="manual-timezone" type="text" autocomplete="off" placeholder="America/Los_Angeles">
-                </label>
-              </div>
-              <div class="button-row">
-                <button type="button" id="build-manual-diagnostic" data-i18n="manualBuild">生成并核对手动配置</button>
-              </div>
-              <details class="manual-field-help">
-                <summary data-i18n="manualFieldHelpTitle">手动字段帮助</summary>
-                <p class="helper-text" data-i18n="manualFieldHelpIntro">如果你无法在 Claude Code 所在环境运行命令，可以按以下方式查看这些值：</p>
-                <table class="help-table">
-                  <tr><th data-i18n="helpTableField">字段</th><th data-i18n="helpTableHowToCheck">查看方式</th><th data-i18n="helpTableNote">说明</th></tr>
-                  <tr><td>ANTHROPIC_BASE_URL</td><td><code>echo $ANTHROPIC_BASE_URL</code></td><td data-i18n="manualFieldHelpBaseUrl">在终端执行 echo $ANTHROPIC_BASE_URL。如果为空表示未设置，Claude Code 使用默认官方 API。</td></tr>
-                  <tr><td data-i18n="manualProxy">代理变量</td><td><code>env | grep -i proxy</code></td><td data-i18n="manualFieldHelpProxy">在终端执行 env | grep -i proxy。你只需要填写主机名或 set，不要粘贴账号密码。常见变量：HTTP_PROXY、HTTPS_PROXY、ALL_PROXY。</td></tr>
-                  <tr><td>Locale</td><td><code>echo $LANG && echo $LC_ALL</code></td><td data-i18n="manualFieldHelpLocale">在终端执行 echo $LANG && echo $LC_ALL。macOS 上可用 defaults read -g AppleLocale。例如 en_US.UTF-8。</td></tr>
-                  <tr><td data-i18n="manualTimezone">Shell 时区</td><td><code>echo $TZ</code></td><td data-i18n="manualFieldHelpTimezone">在终端执行 echo $TZ。如果为空，用 date +%Z 查看当前时区缩写，或检查系统时区设置。例如 America/Los_Angeles。</td></tr>
-                </table>
-                <p class="help-warning" data-i18n="manualFieldHelpWarning">安全提醒：不要在任何字段中输入 API key、token、密码、SSH 私钥或代理凭据。本页面只做合规一致性检查。</p>
-              </details>
-            </details>
             <div class="diagnostic-summary" id="diagnostic-summary">尚未核对 Claude Code 本机配置。</div>
           </article>
         </div>

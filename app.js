@@ -44,6 +44,7 @@ const TIMEZONE_COUNTRY_HINTS = {
 const I18N = {
   zh: {
     heroEyebrow: 'Claude Code 专用 · 百分制风险分 · 关闭即删除',
+    githubLink: 'GitHub',
     pageTitle: 'Claude Code 合规自查',
     heroLede: '一次点击完成浏览器与网络出口检测，再粘贴 Claude Code 脱敏配置 JSON，检查与 Anthropic 支持地区政策的一致性。发现问题后只给合规化整改建议。风险分越低越好。',
     privacyTitle: '隐私承诺',
@@ -59,19 +60,12 @@ const I18N = {
     runWebProbes: '开始环境与网络检测',
     step2Number: '步骤 2 · 30/100',
     step2Title: 'Claude Code 本机配置核对',
-    step2Copy: '复制命令到 Claude Code 所在环境运行，把输出的脱敏 JSON 粘贴回来。手机端可在 SSH/终端应用中运行；无法运行命令时，可展开下方手动核对并填写可见配置。页面只本地解析，不上传、不保存。',
+    step2Copy: '当前仅支持在 Claude Code 所在电脑终端运行命令并粘贴脱敏 JSON。页面只在浏览器本地解析，不上传、不保存。',
     commandLabel: '生成脱敏配置 JSON 的命令',
     copyCommand: '复制命令',
     diagnosticInputLabel: '粘贴脱敏配置 JSON',
     diagnosticPlaceholder: '{"env":{"ANTHROPIC_BASE_URL":"https://api.anthropic.com","HTTPS_PROXY":"set"},"locale":{"LANG":"en_US.UTF-8","AppleLocale":"en_US"},"timezone":"America/Los_Angeles"}',
     parseDiagnostic: '核对 Claude Code 配置',
-    manualSummary: '手机端手动核对',
-    manualCopy: '如果你在手机终端、SSH 应用或远程控制环境中使用 Claude Code，可以直接运行上方命令；如果当前手机无法运行命令，就把能看到的 BASE_URL、代理、Locale、时区填入这里，页面会生成同样的脱敏 JSON 并本地评分。',
-    manualBaseUrl: 'ANTHROPIC_BASE_URL 主机',
-    manualProxy: '代理主机或 set',
-    manualLocale: 'Locale',
-    manualTimezone: 'Shell 时区',
-    manualBuild: '生成并核对手动配置',
     resultKicker: '结果',
     resultsTitle: '风险项、证据与合规化建议',
     basisKicker: '原理',
@@ -151,31 +145,11 @@ const I18N = {
     statusPending: '等待中',
     statusUnavailable: '不可用',
     statusError: '错误',
-    statusOk: '正常',
-    deviceLabel: 'Claude Code 运行环境',
-    deviceComputer: '电脑',
-    deviceRemoteServer: '远程服务器',
-    deviceIphone: 'iPhone',
-    deviceAndroid: '安卓',
-    deviceOther: '其他',
-    deviceComputerGuide: '在 Claude Code 所在的电脑终端中运行上方命令，把输出的脱敏 JSON 粘贴回来即可。',
-    deviceRemoteServerGuide: '使用任意设备上的 SSH 工具连接到 Claude Code 所在的服务器，在 SSH 会话中运行上方命令，将输出的 JSON 粘贴回本页面。页面只本地解析，不上传、不保存。',
-    deviceIphoneGuide: '首选：如果 Claude Code 运行环境无法方便进入终端，可直接展开下方手动字段填写 ANTHROPIC_BASE_URL、代理、Locale、shell 时区。备选1：如果 Claude Code 跑在远程服务器，切换到"远程服务器"选项用 SSH App 连接后运行命令。备选2：如果 Claude Code 跑在本地电脑，可在那台电脑终端运行命令，再把输出 JSON 传回手机粘贴。',
-    deviceAndroidGuide: '首选：如果使用 Termux 等终端环境或 SSH App，在 Claude Code 所在环境运行上方命令。备选：如果 Claude Code 跑在远程服务器，切换到"远程服务器"选项用 SSH App 连接。如果无法运行命令，展开下方手动字段填写可见配置。',
-    deviceOtherGuide: '在 Claude Code 实际运行的环境中执行上方命令，或展开下方手动字段填写可见配置。页面只本地解析，不上传、不保存。',
-    manualFieldHelpTitle: '手动字段帮助',
-    manualFieldHelpIntro: '如果你无法在 Claude Code 所在环境运行命令，可以按以下方式查看这些值：',
-    manualFieldHelpBaseUrl: '在终端执行 echo $ANTHROPIC_BASE_URL。如果为空表示未设置，Claude Code 使用默认官方 API。',
-    manualFieldHelpProxy: '在终端执行 env | grep -i proxy。你只需要填写主机名或 set，不要粘贴账号密码。常见变量：HTTP_PROXY、HTTPS_PROXY、ALL_PROXY。',
-    manualFieldHelpLocale: '在终端执行 echo $LANG && echo $LC_ALL。macOS 上可用 defaults read -g AppleLocale。例如 en_US.UTF-8。',
-    manualFieldHelpTimezone: '在终端执行 echo $TZ。如果为空，用 date +%Z 查看当前时区缩写，或检查系统时区设置。例如 America/Los_Angeles。',
-    manualFieldHelpWarning: '安全提醒：不要在任何字段中输入 API key、token、密码、SSH 私钥或代理凭据。本页面只做合规一致性检查。',
-    helpTableField: '字段',
-    helpTableHowToCheck: '查看方式',
-    helpTableNote: '说明'
+    statusOk: '正常'
   },
   en: {
     heroEyebrow: 'Claude Code only · 100-point risk score · deleted on close',
+    githubLink: 'GitHub',
     pageTitle: 'Claude Code Compliance Check',
     heroLede: 'Run browser and network checks with one click, then paste a redacted Claude Code configuration JSON to review consistency with Anthropic supported regions. Findings focus only on compliant remediation. Lower scores are better.',
     privacyTitle: 'Privacy Promise',
@@ -191,19 +165,12 @@ const I18N = {
     runWebProbes: 'Start Environment and Network Check',
     step2Number: 'Step 2 · 30/100',
     step2Title: 'Claude Code Local Configuration',
-    step2Copy: 'Copy the command, run it in the environment where Claude Code runs, and paste the redacted JSON output. On mobile, run it in an SSH or terminal app; if command execution is not available, expand the manual check below and enter the visible settings. The page parses fields locally only. Nothing is uploaded or stored.',
+    step2Copy: 'This step currently supports the computer where Claude Code runs: run the command in that terminal, then paste the redacted JSON here. The page parses fields locally only. Nothing is uploaded or stored.',
     commandLabel: 'Command to generate redacted configuration JSON',
     copyCommand: 'Copy Command',
     diagnosticInputLabel: 'Paste redacted configuration JSON',
     diagnosticPlaceholder: '{"env":{"ANTHROPIC_BASE_URL":"https://api.anthropic.com","HTTPS_PROXY":"set"},"locale":{"LANG":"en_US.UTF-8","AppleLocale":"en_US"},"timezone":"America/Los_Angeles"}',
     parseDiagnostic: 'Check Claude Code Configuration',
-    manualSummary: 'Manual mobile check',
-    manualCopy: 'If you use Claude Code from a mobile terminal, SSH app, or remote-control environment, you can run the command above there. If the current phone cannot run commands, enter the visible BASE_URL, proxy, locale, and timezone here; the page will generate the same redacted JSON and score it locally.',
-    manualBaseUrl: 'ANTHROPIC_BASE_URL host',
-    manualProxy: 'Proxy host or set',
-    manualLocale: 'Locale',
-    manualTimezone: 'Shell timezone',
-    manualBuild: 'Build and check manual config',
     resultKicker: 'Results',
     resultsTitle: 'Risks, Evidence, and Compliant Remediation',
     basisKicker: 'Principles',
@@ -283,31 +250,11 @@ const I18N = {
     statusPending: 'pending',
     statusUnavailable: 'unavailable',
     statusError: 'error',
-    statusOk: 'ok',
-    deviceLabel: 'Claude Code runtime environment',
-    deviceComputer: 'Computer',
-    deviceRemoteServer: 'Remote server',
-    deviceIphone: 'iPhone',
-    deviceAndroid: 'Android',
-    deviceOther: 'Other',
-    deviceComputerGuide: 'Run the command above in the terminal on the computer where Claude Code runs, then paste the redacted JSON output here.',
-    deviceRemoteServerGuide: 'Use an SSH tool on any device to connect to the server where Claude Code runs. Run the command in the SSH session and paste the JSON output back to this page. The page parses fields locally only. Nothing is uploaded or stored.',
-    deviceIphoneGuide: 'Preferred: if the Claude Code environment cannot easily run commands, expand the manual fields below and enter ANTHROPIC_BASE_URL, proxy, locale, and shell timezone. Alternative 1: if Claude Code runs on a remote server, switch to "Remote server" and use an SSH app to connect and run the command. Alternative 2: if Claude Code runs on a local computer, run the command on that computer and transfer the JSON output to your phone for pasting.',
-    deviceAndroidGuide: 'Preferred: if using a terminal environment such as Termux or an SSH app, run the command above where Claude Code runs. Alternative: if Claude Code runs on a remote server, switch to "Remote server" and use an SSH app to connect. If command execution is not available, expand the manual fields below.',
-    deviceOtherGuide: 'Run the command above in the environment where Claude Code actually runs, or expand the manual fields below. The page parses fields locally only. Nothing is uploaded or stored.',
-    manualFieldHelpTitle: 'Manual field help',
-    manualFieldHelpIntro: 'If you cannot run commands where Claude Code runs, find these values as follows:',
-    manualFieldHelpBaseUrl: 'Run echo $ANTHROPIC_BASE_URL in the terminal. If empty, the variable is not set and Claude Code uses the default official API.',
-    manualFieldHelpProxy: 'Run env | grep -i proxy in the terminal. Enter only the hostname or "set". Do not paste account names or passwords. Common variables: HTTP_PROXY, HTTPS_PROXY, ALL_PROXY.',
-    manualFieldHelpLocale: 'Run echo $LANG && echo $LC_ALL in the terminal. On macOS also try defaults read -g AppleLocale. Example: en_US.UTF-8.',
-    manualFieldHelpTimezone: 'Run echo $TZ in the terminal. If empty, check with date +%Z or your system timezone settings. Example: America/Los_Angeles.',
-    manualFieldHelpWarning: 'Security reminder: do not enter any API key, token, password, SSH private key, or proxy credentials in any field. This page only performs a compliance consistency check.',
-    helpTableField: 'Field',
-    helpTableHowToCheck: 'How to check',
-    helpTableNote: 'Note'
+    statusOk: 'ok'
   },
   ru: {
     heroEyebrow: 'Только Claude Code · риск по шкале 100 · удаляется при закрытии',
+    githubLink: 'GitHub',
     pageTitle: 'Проверка соответствия Claude Code',
     heroLede: 'Одним нажатием проверьте браузер и сетевой выход, затем вставьте обезличенный JSON конфигурации Claude Code для проверки соответствия политике поддерживаемых регионов Anthropic. Рекомендации направлены только на легальное исправление. Чем ниже балл, тем лучше.',
     privacyTitle: 'Конфиденциальность',
@@ -323,19 +270,12 @@ const I18N = {
     runWebProbes: 'Начать проверку среды и сети',
     step2Number: 'Шаг 2 · 30/100',
     step2Title: 'Локальная конфигурация Claude Code',
-    step2Copy: 'Скопируйте команду, выполните ее там, где запущен Claude Code, и вставьте обезличенный JSON. На телефоне это можно сделать в SSH или terminal-приложении; если команда недоступна, раскройте ручную проверку ниже и внесите видимые настройки. Страница разбирает поля только локально. Ничего не загружается и не сохраняется.',
+    step2Copy: 'Этот шаг сейчас поддерживает компьютер, где запущен Claude Code: выполните команду в этом терминале и вставьте обезличенный JSON сюда. Страница разбирает поля только локально. Ничего не загружается и не сохраняется.',
     commandLabel: 'Команда для создания обезличенного JSON конфигурации',
     copyCommand: 'Скопировать команду',
     diagnosticInputLabel: 'Вставьте обезличенный JSON конфигурации',
     diagnosticPlaceholder: '{"env":{"ANTHROPIC_BASE_URL":"https://api.anthropic.com","HTTPS_PROXY":"set"},"locale":{"LANG":"en_US.UTF-8","AppleLocale":"en_US"},"timezone":"America/Los_Angeles"}',
     parseDiagnostic: 'Проверить конфигурацию Claude Code',
-    manualSummary: 'Ручная проверка на телефоне',
-    manualCopy: 'Если вы используете Claude Code из мобильного терминала, SSH-приложения или удаленной среды, выполните команду выше там. Если текущий телефон не может выполнять команды, внесите видимые BASE_URL, proxy, locale и часовой пояс здесь; страница создаст тот же обезличенный JSON и оценит его локально.',
-    manualBaseUrl: 'Хост ANTHROPIC_BASE_URL',
-    manualProxy: 'Proxy host или set',
-    manualLocale: 'Locale',
-    manualTimezone: 'Часовой пояс shell',
-    manualBuild: 'Создать и проверить вручную',
     resultKicker: 'Результаты',
     resultsTitle: 'Риски, доказательства и легальное исправление',
     basisKicker: 'Принцип',
@@ -415,33 +355,11 @@ const I18N = {
     statusPending: 'ожидание',
     statusUnavailable: 'недоступно',
     statusError: 'ошибка',
-    statusOk: 'ok',
-    deviceLabel: 'Среда выполнения Claude Code',
-    deviceComputer: 'Компьютер',
-    deviceRemoteServer: 'Удаленный сервер',
-    deviceIphone: 'iPhone',
-    deviceAndroid: 'Android',
-    deviceOther: 'Другое',
-    deviceComputerGuide: 'Выполните команду выше в терминале компьютера, где запущен Claude Code, и вставьте обезличенный JSON сюда.',
-    deviceRemoteServerGuide: 'Используйте SSH-инструмент на любом устройстве для подключения к серверу, где запущен Claude Code. Выполните команду в SSH-сессии и вставьте JSON обратно на эту страницу. Страница разбирает поля только локально. Ничего не загружается и не сохраняется.',
-    deviceIphoneGuide: 'Предпочтительно: если среда Claude Code не позволяет легко выполнять команды, раскройте ручные поля ниже и введите ANTHROPIC_BASE_URL, proxy, locale и часовой пояс shell. Альтернатива 1: если Claude Code работает на удаленном сервере, переключитесь на "Удаленный сервер" и используйте SSH-приложение. Альтернатива 2: если Claude Code работает на локальном компьютере, выполните команду на нем и перенесите JSON на телефон для вставки.',
-    deviceAndroidGuide: 'Предпочтительно: при использовании терминала (например, Termux) или SSH-приложения выполните команду выше там, где запущен Claude Code. Альтернатива: если Claude Code работает на удаленном сервере, переключитесь на "Удаленный сервер" и используйте SSH-приложение. Если команда недоступна, раскройте ручные поля ниже.',
-    deviceOtherGuide: 'Выполните команду выше в среде, где фактически запущен Claude Code, или раскройте ручные поля ниже. Страница разбирает поля только локально. Ничего не загружается и не сохраняется.',
-    manualFieldHelpTitle: 'Справка по ручным полям',
-    manualFieldHelpIntro: 'Если вы не можете выполнить команды в среде Claude Code, найдите эти значения следующим образом:',
-    manualFieldHelpBaseUrl: 'Выполните echo $ANTHROPIC_BASE_URL в терминале. Если пусто — переменная не задана и Claude Code использует официальный API по умолчанию.',
-    manualFieldHelpProxy: 'Выполните env | grep -i proxy в терминале. Введите только имя хоста или "set". Не вставляйте имена учетных записей или пароли. Распространенные переменные: HTTP_PROXY, HTTPS_PROXY, ALL_PROXY.',
-    manualFieldHelpLocale: 'Выполните echo $LANG && echo $LC_ALL в терминале. На macOS также попробуйте defaults read -g AppleLocale. Пример: en_US.UTF-8.',
-    manualFieldHelpTimezone: 'Выполните echo $TZ в терминале. Если пусто, проверьте date +%Z или настройки часового пояса системы. Пример: America/Los_Angeles.',
-    manualFieldHelpWarning: 'Напоминание о безопасности: не вводите API key, token, пароль, SSH-ключ или учетные данные proxy ни в одно поле. Эта страница выполняет только проверку соответствия.',
-    helpTableField: 'Поле',
-    helpTableHowToCheck: 'Способ проверки',
-    helpTableNote: 'Примечание'
+    statusOk: 'ok'
   }
 }
 
 let currentLanguage = getInitialLanguage()
-let currentDevice = 'computer'
 
 const FINDING_TRANSLATIONS = {
   en: {
@@ -789,10 +707,6 @@ function translateStaticContent() {
     element.setAttribute('placeholder', t(element.dataset.i18nPlaceholder))
   })
   updateLanguageButtons()
-  const guideEl = document.getElementById('device-guide')
-  if (guideEl) {
-    guideEl.textContent = t(DEVICE_GUIDE_KEYS[currentDevice] || 'deviceComputerGuide')
-  }
 }
 
 function updateLanguageButtons() {
@@ -806,30 +720,6 @@ function setLanguage(language) {
   translateStaticContent()
   updateNetworkServiceUi()
   renderAll()
-  // 单独更新设备引导文案（非 data-i18n 元素，不会被 translateStaticContent 覆盖）
-  const guideEl = document.getElementById('device-guide')
-  if (guideEl) {
-    guideEl.textContent = t(DEVICE_GUIDE_KEYS[currentDevice] || 'deviceComputerGuide')
-  }
-}
-
-const DEVICE_GUIDE_KEYS = {
-  'computer': 'deviceComputerGuide',
-  'remote-server': 'deviceRemoteServerGuide',
-  'iphone': 'deviceIphoneGuide',
-  'android': 'deviceAndroidGuide',
-  'other': 'deviceOtherGuide'
-}
-
-function switchDevice(device) {
-  currentDevice = device
-  document.querySelectorAll('.segment-button').forEach((btn) => {
-    btn.classList.toggle('active', btn.dataset.device === device)
-  })
-  const guideEl = document.getElementById('device-guide')
-  if (guideEl) {
-    guideEl.textContent = t(DEVICE_GUIDE_KEYS[device] || 'deviceComputerGuide')
-  }
 }
 
 function normalizeCountryCode(value) {
@@ -1889,32 +1779,6 @@ function clearSession() {
   renderAll()
 }
 
-function buildManualDiagnostic() {
-  const baseUrl = document.getElementById('manual-base-url').value.trim()
-  const proxy = document.getElementById('manual-proxy').value.trim()
-  const locale = document.getElementById('manual-locale').value.trim()
-  const timezone = document.getElementById('manual-timezone').value.trim()
-  const diagnostic = normalizeDiagnostic({
-    env: {
-      ANTHROPIC_BASE_URL: baseUrl,
-      HTTPS_PROXY: proxy,
-      HTTP_PROXY: '',
-      ALL_PROXY: '',
-      GRPC_PROXY: ''
-    },
-    locale: {
-      LANG: locale,
-      LC_ALL: '',
-      AppleLocale: locale.replace('_', '-').replace(/\..*$/, '')
-    },
-    timezone
-  })
-  const text = JSON.stringify(diagnostic, null, 2)
-  document.getElementById('diagnostic-input').value = text
-  state.diagnostic = diagnostic
-  renderAll()
-}
-
 async function copyDiagnosticCommand() {
   const command = document.getElementById('diagnostic-command').value
   try {
@@ -1946,10 +1810,6 @@ function bindEvents() {
     } catch (error) {
       document.getElementById('diagnostic-summary').textContent = error.message
     }
-  })
-  document.getElementById('build-manual-diagnostic').addEventListener('click', buildManualDiagnostic)
-  document.querySelectorAll('.segment-button').forEach((btn) => {
-    btn.addEventListener('click', () => switchDevice(btn.dataset.device))
   })
 }
 
