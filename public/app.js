@@ -60,7 +60,7 @@ const I18N = {
     runWebProbes: '开始环境与网络检测',
     step2Number: '步骤 2 · 30/100',
     step2Title: 'Claude Code 本机配置核对',
-    step2Copy: '当前仅支持在 Claude Code 所在电脑终端运行命令并粘贴脱敏 JSON。页面只在浏览器本地解析，不上传、不保存。',
+    step2Copy: '当前仅支持在 Claude Code 所在电脑终端运行命令并粘贴脱敏 JSON。页面只在浏览器本地解析，不会发送或保存。',
     commandLabel: '生成脱敏配置 JSON 的命令',
     copyCommand: '复制命令',
     diagnosticInputLabel: '粘贴脱敏配置 JSON',
