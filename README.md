@@ -26,14 +26,14 @@ The page supports all Anthropic restricted-region checks by treating the officia
 
 ## How To Use
 
-1. Open the hosted page.
+1. Open the [hosted check](https://ai-check.mydaily.info).
 2. Run the browser and network check.
 3. On the computer where Claude Code runs, copy the generated command, run it in the terminal, and paste the redacted JSON output back into the page.
 4. Review the risk score, evidence, and compliant remediation suggestions.
 
 The local Claude Code configuration step currently supports the computer where Claude Code runs. Other unverified runtime paths are not exposed until they have a reliable user path.
 
-## Privacy Model
+## Data Statement
 
 - Browser and network checks run only after the user clicks the check button.
 - The hosted network probe receives request metadata needed for network checks, such as exit IP-derived country, ASN, request time, protocol, and related Cloudflare request metadata.
